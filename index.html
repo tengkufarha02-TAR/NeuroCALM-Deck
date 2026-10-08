@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroCalm Deck: Evidence-Based Somatic Regulation Cards</title>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.462.0/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent-mint:#0ea678; --accent-teal:#0d9488; --accent-blue:#2563eb; --accent-violet:#7c3aed;
+    --bg:#f8fafc; --bg2:#f1f5f9; --panel:#ffffff; --panel-line:rgba(15,23,42,.08);
+    --ink:#0f172a; --ink-dim:#64748b; --card-front:#ffffff; --card-back:#ffffff;
+    --shadow: 0 20px 45px rgba(15,23,42,.08);
+    --ring-track: rgba(15,23,42,.08);
+    --danger:#ef4444;
+  }
+  :root[data-theme="dark"]{
+    --bg:#090d16; --bg2:#0f172a; --panel:rgba(15,23,42,.85); --panel-line:rgba(255,255,255,.08);
+    --ink:#f8fafc; --ink-dim:#94a3b8; --card-front:#0d1527; --card-back:#0d1527;
+    --shadow: 0 24px 60px rgba(0,0,0,.6);
+    --ring-track: rgba(255,255,255,.1);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#090d16; --bg2:#0f172a; --panel:rgba(15,23,42,.85); --panel-line:rgba(255,255,255,.08);
+      --ink:#f8fafc; --ink-dim:#94a3b8; --card-front:#0d1527; --card-back:#0d1527;
+      --shadow: 0 24px 60px rgba(0,0,0,.6);
+      --ring-track: rgba(255,255,255,.1);
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  .stage{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 900px 500px at 5% -5%, color-mix(in srgb, var(--accent-mint) 15%, transparent), transparent),
+      radial-gradient(ellipse 800px 600px at 100% 5%, color-mix(in srgb, var(--accent-blue) 15%, transparent), transparent),
+      radial-gradient(ellipse 900px 700px at 50% 105%, color-mix(in srgb, var(--accent-violet) 15%, transparent), transparent),
+      var(--bg);
+  }
+  h1,h2,h3,h4,h5,.disp{font-family:"Space Grotesk",sans-serif;}
+  button{font-family:inherit; cursor:pointer;}
+  button:focus-visible, input:focus-visible, textarea:focus-visible{outline:2.5px solid var(--accent-teal); outline-offset:2px;}
+  .wrap{max-width:1220px; margin:0 auto; padding:24px 20px 60px;}
+
+  /* Topline */
+  .topline{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:24px;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{
+    width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent-mint),var(--accent-teal) 50%,var(--accent-blue));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px color-mix(in srgb, var(--accent-teal) 35%, transparent);
+    color:#fff;
+  }
+  .brand-mark svg{width:22px; height:22px;}
+  .brand h1{font-size:1.22rem; margin:0; font-weight:700;}
+  .brand p{margin:1px 0 0; font-size:.8rem; color:var(--ink-dim);}
+  .top-actions{display:flex; align-items:center; gap:10px;}
+  .sos-btn{
+    background:color-mix(in srgb, var(--danger) 15%, var(--panel));
+    border:1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+    color:var(--danger); font-size:.8rem; font-weight:700; padding:8px 14px;
+    border-radius:999px; display:inline-flex; align-items:center; gap:6px;
+    transition:.2s ease;
+  }
+  .sos-btn:hover{background:var(--danger); color:#fff;}
+  .help-link-btn{
+    background:var(--panel); border:1px solid var(--panel-line); color:var(--ink-dim);
+    font-size:.8rem; font-weight:600; padding:8px 12px; border-radius:999px;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .theme-toggle{
+    display:flex; gap:4px; padding:3px; border-radius:999px; background:var(--panel); border:1px solid var(--panel-line);
+  }
+  .theme-toggle button{
+    width:32px;height:32px;border-radius:999px;border:none;background:transparent;color:var(--ink-dim);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .theme-toggle button.active{background:var(--ink); color:var(--bg);}
+  .theme-toggle svg{width:15px;height:15px;}
+
+  /* Panels */
+  .panel{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:24px;
+    box-shadow:var(--shadow); backdrop-filter:blur(16px);
+  }
+  .hidden{display:none !important;}
+
+  /* START SCREEN */
+  .start-grid{display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1.08fr); gap:24px;}
+  @media (max-width:960px){ .start-grid{grid-template-columns:1fr;} }
+  .deck-hero{padding:36px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden;}
+  .deck-hero h2{font-size:1.85rem; line-height:1.25; margin:0 0 12px;}
+  .deck-hero p.lead{font-size:.95rem; color:var(--ink-dim); line-height:1.6; margin:0 0 24px;}
+  .badge-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:28px;}
+  .badge{background:var(--bg2); border:1px solid var(--panel-line); border-radius:999px; padding:6px 13px; font-size:.78rem; font-weight:600; color:var(--ink-dim); display:flex; align-items:center; gap:6px;}
+
+  .setup{padding:32px;}
+  .setup h3{margin:0 0 6px; font-size:1.05rem;}
+  .setup-sub{color:var(--ink-dim); font-size:.82rem; margin:0 0 18px;}
+  .field-label{font-size:.8rem; font-weight:700; color:var(--ink-dim); margin:18px 0 8px; display:flex; align-items:center; justify-content:space-between;}
+  .field-label span{font-size:.72rem; font-weight:normal;}
+  .filter-chips{display:flex; flex-wrap:wrap; gap:7px;}
+  .chip{
+    border-radius:999px; border:1px solid var(--panel-line); background:var(--bg2); color:var(--ink);
+    padding:6px 12px; font-size:.78rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;
+    transition:.15s ease;
+  }
+  .chip:hover{border-color:var(--accent-teal);}
+  .chip.active{background:var(--accent-teal); color:#fff; border-color:var(--accent-teal);}
+  .chip-cond{background:transparent;}
+  .chip-cond.active{background:linear-gradient(135deg,var(--accent-mint),var(--accent-teal)); color:#fff; border-color:transparent;}
+
+  .start-btn{
+    width:100%; margin-top:26px; border:none; border-radius:15px; padding:15px 22px;
+    font-size:1rem; font-weight:700; color:#fff;
+    background:linear-gradient(105deg,var(--accent-mint),var(--accent-teal) 45%,var(--accent-blue));
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    box-shadow:0 14px 30px color-mix(in srgb, var(--accent-teal) 35%, transparent);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .start-btn:hover{transform:translateY(-2px); box-shadow:0 18px 36px color-mix(in srgb, var(--accent-teal) 45%, transparent);}
+  .deck-count-pill{text-align:center; font-size:.76rem; color:var(--ink-dim); margin-top:10px;}
+
+  /* PLAY SCREEN */
+  .play-grid{display:grid; grid-template-columns: 240px minmax(0,1fr) 280px; gap:20px; align-items:start;}
+  @media (max-width:1100px){ .play-grid{grid-template-columns:1fr;} }
+  .rail{padding:20px;}
+  .rail h4{font-size:.8rem; margin:0 0 12px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.03em;}
+  .stat-row{display:flex; align-items:baseline; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--panel-line);}
+  .stat-row:last-child{border-bottom:none;}
+  .stat-row span{font-size:.8rem; color:var(--ink-dim);}
+  .stat-row strong{font-size:1.05rem; font-family:"Space Grotesk",sans-serif;}
+  .active-filter-box{margin-top:18px; padding-top:16px; border-top:1px solid var(--panel-line);}
+  .active-filter-box p{font-size:.75rem; color:var(--ink-dim); margin:0 0 6px;}
+
+  /* CARD ZONE */
+  .stage-col{display:flex; flex-direction:column; align-items:center; gap:16px;}
+  .table-stage{width:100%; display:flex; justify-content:center; align-items:center;}
+  .card-zone{width:min(100%, 540px);}
+  .regulation-card{
+    width:100%; border-radius:24px; overflow:hidden; border:1px solid var(--panel-line);
+    background:var(--card-front); box-shadow:var(--shadow); display:flex; flex-direction:column;
+    animation:cardAppear .4s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes cardAppear{from{opacity:0; transform:translateY(16px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);}}
+  
+  .card-header{
+    padding:22px 24px 18px;
+    background:linear-gradient(135deg, color-mix(in srgb, var(--cat-color,#0d9488) 18%, var(--card-front)), color-mix(in srgb, var(--accent-blue) 8%, var(--card-front)));
+    border-bottom:1px solid var(--panel-line);
+  }
+  .card-meta{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;}
+  .cat-badge{
+    display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px;
+    background:var(--cat-color,#0d9488); color:#fff; font-size:.74rem; font-weight:700;
+  }
+  .card-num{font-size:.74rem; font-weight:700; color:var(--ink-dim); font-family:"Space Grotesk",sans-serif;}
+  .card-title{font-size:1.32rem; margin:0 0 6px; line-height:1.3; font-weight:700;}
+  .symptom-tag-row{display:flex; flex-wrap:wrap; gap:5px;}
+  .sym-tag{font-size:.7rem; padding:3px 8px; border-radius:6px; background:var(--bg); color:var(--ink-dim); font-weight:600;}
+
+  .card-body{padding:22px 24px;}
+  .core-directive{
+    font-size:1.02rem; font-weight:600; line-height:1.55; color:var(--ink);
+    margin:0 0 16px; padding-left:14px; border-left:3.5px solid var(--cat-color,#0d9488);
+  }
+
+  /* Paced Breathing Ring Widget */
+  .breath-widget{
+    background:var(--bg2); border:1px solid var(--panel-line); border-radius:18px;
+    padding:16px; margin-bottom:18px; display:flex; align-items:center; gap:16px;
+  }
+  .breath-circle-wrap{position:relative; width:64px; height:64px; flex:0 0 64px;}
+  .breath-svg{width:64px; height:64px; transform:rotate(-90deg);}
+  .breath-svg circle{fill:none; stroke-width:5;}
+  .breath-svg .b-track{stroke:var(--ring-track);}
+  .breath-svg .b-prog{stroke:var(--accent-teal); stroke-linecap:round; transition:stroke-dashoffset .2s linear;}
+  .breath-center-dot{
+    position:absolute; inset:12px; border-radius:999px; background:var(--accent-teal);
+    opacity:.3; transition:transform 4s ease-in-out, opacity 4s ease-in-out;
+  }
+  .breath-center-dot.inhale{transform:scale(1.3); opacity:.8;}
+  .breath-center-dot.exhale{transform:scale(.7); opacity:.2;}
+  .breath-details{flex:1;}
+  .breath-title{font-size:.82rem; font-weight:700; margin:0 0 2px;}
+  .breath-state{font-size:.88rem; font-weight:700; color:var(--accent-teal); margin:0 0 2px;}
+  .breath-sub{font-size:.74rem; color:var(--ink-dim); margin:0;}
+  .breath-ctrl-btn{
+    border:1px solid var(--panel-line); background:var(--panel); color:var(--ink);
+    border-radius:10px; font-size:.75rem; font-weight:700; padding:8px 12px;
+  }
+
+  /* Directive Steps */
+  .section-label{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-dim); margin:0 0 10px;}
+  .steps-list{list-style:none; padding:0; margin:0 0 16px; display:flex; flex-direction:column; gap:9px;}
+  .steps-list li{display:flex; gap:10px; font-size:.86rem; line-height:1.45; color:var(--ink);}
+  .step-num{
+    flex:0 0 20px; height:20px; border-radius:6px; background:var(--bg2); border:1px solid var(--panel-line);
+    display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:800; color:var(--ink-dim);
+  }
+
+  /* Calming Somatic Anchor */
+  .soothing-anchor-box{
+    display:flex; align-items:flex-start; gap:12px;
+    background: color-mix(in srgb, var(--cat-color,#0d9488) 10%, var(--bg));
+    border: 1px solid color-mix(in srgb, var(--cat-color,#0d9488) 25%, transparent);
+    border-left: 4px solid var(--cat-color,#0d9488);
+    border-radius: 14px; padding: 13px 15px; margin-bottom: 14px;
+  }
+  .anchor-icon{
+    flex:0 0 auto; color:var(--cat-color,#0d9488); margin-top:2px;
+  }
+  .anchor-label{
+    font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--cat-color,#0d9488); display:block; margin-bottom:2px;
+  }
+  .anchor-text{
+    margin:0; font-size:.86rem; font-weight:600; line-height:1.45; color:var(--ink);
+  }
+
+  /* Collapsible Counseling Drawer */
+  .counseling-drawer{
+    border: 1px solid var(--panel-line); border-radius: 12px; margin-bottom: 14px;
+    background: var(--bg2); overflow: hidden;
+  }
+  .counseling-summary{
+    padding: 10px 14px; font-size: .76rem; font-weight: 700; color: var(--ink-dim);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    list-style: none; user-select: none;
+  }
+  .counseling-summary::-webkit-details-marker { display: none; }
+  .counseling-content{
+    padding: 10px 14px 14px; border-top: 1px solid var(--panel-line);
+  }
+  .counseling-content p{
+    margin: 0; font-size: .82rem; font-style: italic; color: var(--ink); line-height: 1.45;
+  }
+
+  .evidence-citation{
+    font-size:.72rem; color:var(--ink-dim); border-top:1px solid var(--panel-line); padding-top:10px;
+    display:flex; align-items:center; gap:6px;
+  }
+
+  /* Draw Control */
+  .draw-bar{display:flex; gap:10px; width:100%; max-width:540px;}
+  .ctrl-btn{
+    flex:1; border-radius:14px; padding:13px 18px; font-size:.9rem; font-weight:700;
+    border:1px solid var(--panel-line); background:var(--panel); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .ctrl-btn.primary{
+    background:linear-gradient(105deg,var(--accent-mint),var(--accent-teal) 45%,var(--accent-blue));
+    color:#fff; border:none; box-shadow:0 12px 24px color-mix(in srgb, var(--accent-teal) 30%, transparent);
+  }
+  .ctrl-btn.secondary{flex:0 0 auto; width:52px; padding:0;}
+
+  /* SIDE PANEL */
+  .side{padding:20px;}
+  .side h4{margin:0 0 4px; font-size:.9rem; font-weight:700;}
+  .side-sub{font-size:.78rem; color:var(--ink-dim); margin:0 0 14px;}
+  .journal-input{
+    width:100%; border-radius:12px; border:1px solid var(--panel-line); background:var(--bg2); color:var(--ink);
+    padding:11px 12px; font-size:.82rem; resize:vertical; min-height:100px; line-height:1.45;
+  }
+  .save-note-btn{
+    margin-top:8px; width:100%; border:none; border-radius:10px; padding:10px; font-size:.8rem; font-weight:700;
+    background:var(--accent-teal); color:#fff;
+  }
+  .notes-list{display:flex; flex-direction:column; gap:8px; margin-top:14px; max-height:260px; overflow-y:auto;}
+  .note-card{border-left:3px solid var(--accent-teal); background:var(--bg2); border-radius:0 10px 10px 0; padding:9px 11px;}
+  .note-card p{margin:0; font-size:.72rem; font-weight:700; color:var(--ink-dim);}
+  .note-card span{font-size:.8rem; display:block; margin-top:3px; white-space:pre-wrap;}
+  .note-actions{display:flex; justify-content:flex-end; gap:6px; margin-top:4px;}
+  .note-btn{background:none; border:none; color:var(--ink-dim); padding:2px; display:inline-flex;}
+  .note-btn:hover{color:var(--ink);}
+
+  /* MODALS */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(6px);
+    z-index:900; display:flex; align-items:center; justify-content:center; padding:18px;
+  }
+  .modal{
+    background:var(--panel); border:1px solid var(--panel-line); border-radius:22px;
+    width:min(100%, 520px); max-height:90vh; overflow-y:auto; padding:26px; box-shadow:var(--shadow);
+    position:relative;
+  }
+  .modal-close{position:absolute; right:18px; top:18px; background:none; border:none; color:var(--ink-dim);}
+  .modal h3{margin:0 0 8px; font-size:1.25rem;}
+  .modal p{font-size:.85rem; color:var(--ink-dim); line-height:1.5; margin:0 0 16px;}
+  .helpline-item{
+    background:var(--bg2); border:1px solid var(--panel-line); border-radius:14px;
+    padding:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:12px;
+  }
+  .helpline-item strong{font-size:.88rem; display:block;}
+  .helpline-item span{font-size:.76rem; color:var(--ink-dim); display:block; margin-top:2px;}
+  .call-btn{
+    background:var(--accent-teal); color:#fff; border-radius:999px; text-decoration:none;
+    font-size:.78rem; font-weight:700; padding:8px 14px; display:inline-flex; align-items:center; gap:6px;
+    flex:0 0 auto;
+  }
+  
+  /* 54321 SOS Steps */
+  .sos-step{
+    background:var(--bg2); border-radius:14px; padding:14px; margin-bottom:8px; border:1px solid var(--panel-line);
+  }
+  .sos-step.active{border-color:var(--danger); background:color-mix(in srgb, var(--danger) 8%, var(--bg2));}
+  .sos-step h5{margin:0 0 4px; font-size:.88rem;}
+  .sos-step p{margin:0; font-size:.8rem; color:var(--ink-dim);}
+
+  /* Toast */
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(140%);
+    opacity:0; pointer-events:none; transition:.3s ease;
+    background:var(--ink); color:var(--bg); padding:10px 18px; border-radius:999px;
+    font-size:.82rem; font-weight:600; z-index:999; box-shadow:0 12px 30px rgba(0,0,0,.3);
+  }
+  .toast.show{transform:translateX(-50%) translateY(0); opacity:1;}
+
+  @media (max-width:640px){
+    .wrap{padding:16px 14px 40px;}
+    .deck-hero, .setup, .rail, .side, .card-body{padding:18px;}
+    .card-title{font-size:1.18rem;}
+    .breath-widget{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="wrap">
+    
+    <!-- Top Bar -->
+    <header class="topline">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <h1>NeuroCalm Deck</h1>
+          <p>Directive Somatic Interventions to Help You Grounding · by Tengku Farha</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="sos-btn" id="openSosBtn">
+         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Ground Me Now (SOS)
+        </button>
+        <button type="button" class="help-link-btn" id="openHelpBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Helplines
+        </button>
+        <div class="theme-toggle" role="group" aria-label="Theme">
+          <button type="button" id="themeLight" title="Light mode"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+          <button type="button" id="themeDark" title="Dark mode"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- START / SETUP SCREEN -->
+    <section id="startScreen" class="start-grid">
+      <div class="panel deck-hero">
+        <div class="badge-row">
+          <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 300 Directive Cards</span>
+          <span class="badge"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> DBT · Polyvagal · Somatics · ACT</span>
+        </div>
+        <h2>Clear, directive micro-protocols to co-regulate your nervous system.</h2>
+        <p class="lead">When triggered, the brain needs concrete instructions, not demands for reflection. Pick your condition or select your immediate physical sensation to draw tailored protocols that brake panic, thaw freeze states, and ground intrusive loops.</p>
+        <div style="margin-top:auto; font-size:.8rem; color:var(--ink-dim);">
+          Select at least one condition or symptom to tailor your deck, or draw across all cards.
+        </div>
+      </div>
+
+      <div class="panel setup">
+        <h3>Filter & Configure Your Deck</h3>
+        <p class="setup-sub">Tap any condition or current symptom to choose your focus.</p>
+
+        <span class="field-label">1. Focus Conditions <span id="condSelectedCount">None selected (tap to choose)</span></span>
+        <div class="filter-chips" id="condChips"></div>
+
+        <span class="field-label">2. Current Somatic Symptom / State <span id="symSelectedCount">None selected (tap to choose)</span></span>
+        <div class="filter-chips" id="symChips"></div>
+
+        <button class="start-btn" id="startDeckBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Start Grounding
+        </button>
+        <p class="deck-count-pill" id="deckCountPill">Select at least one condition or symptom</p>
+      </div>
+    </section>
+
+    <!-- PLAY SCREEN -->
+    <section id="playScreen" class="play-grid hidden">
+      <!-- Left Rail -->
+      <aside class="panel rail">
+        <h4>Session Progress</h4>
+        <div class="stat-row"><span>Cards Drawn</span><strong id="statDrawn">0</strong></div>
+        <div class="stat-row"><span>Remaining in Pool</span><strong id="statRemaining">0</strong></div>
+        <div class="stat-row"><span>Notes Saved</span><strong id="statNotesCount">0</strong></div>
+
+        <div class="active-filter-box">
+          <p>Active Filters</p>
+          <div id="railFilterPills" style="display:flex; flex-direction:column; gap:4px; font-size:.76rem; color:var(--ink);"></div>
+        </div>
+
+        <button type="button" class="ctrl-btn" id="reconfigureBtn" style="margin-top:20px; width:100%; font-size:.8rem; padding:9px;">
+          Adjust Filters
+        </button>
+      </aside>
+
+      <!-- Center Stage -->
+      <main class="stage-col">
+        <div class="table-stage">
+          <div class="card-zone">
+            <article class="regulation-card" id="cardElement">
+              <div class="card-header">
+                <div class="card-meta">
+                  <span class="cat-badge" id="cardCategoryBadge">Condition</span>
+                  <span class="card-num" id="cardNum">CARD 000 / 300</span>
+                </div>
+                <h2 class="card-title" id="cardTitle">Title</h2>
+                <div class="symptom-tag-row" id="cardSymptomTags"></div>
+              </div>
+
+              <div class="card-body">
+                <p class="core-directive" id="cardDirective">Follow this physical sequence directly:</p>
+
+                <!-- Guided Paced Breathing Ring -->
+                <div class="breath-widget">
+                  <div class="breath-circle-wrap">
+                    <svg class="breath-svg" viewBox="0 0 40 40">
+                      <circle class="b-track" cx="20" cy="20" r="16"/>
+                      <circle class="b-prog" id="breathProg" cx="20" cy="20" r="16" stroke-dasharray="100.5" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="breath-center-dot" id="breathDot"></div>
+                  </div>
+                  <div class="breath-details">
+                    <h5 class="breath-title" id="breathPatternTitle">Resonant Coherence (4s In / 6s Out)</h5>
+                    <p class="breath-state" id="breathStateText">Ready</p>
+                    <p class="breath-sub" id="breathSubText">Stimulates vagal tone and slows resting heart rate.</p>
+                  </div>
+                  <button type="button" class="breath-ctrl-btn" id="breathToggleBtn">Breathe</button>
+                </div>
+
+                <p class="section-label">Actionable Regulation Protocol</p>
+                <ol class="steps-list" id="cardStepsList"></ol>
+
+                <!-- Directive Co-Regulation Anchor -->
+                <div class="soothing-anchor-box">
+                  <div class="anchor-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </div>
+                  <div>
+                    <span class="anchor-label">Somatic Anchor</span>
+                    <p id="cardSoothingAnchor" class="anchor-text"></p>
+                  </div>
+                </div>
+
+                <!-- Collapsible Counseling Integration -->
+                <details class="counseling-drawer">
+                  <summary class="counseling-summary">
+                    <span>Counseling & Therapy Reflection (Open when calm)</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                  </summary>
+                  <div class="counseling-content">
+                    <p id="cardCounselingInquiry"></p>
+                  </div>
+                </details>
+
+                <div class="evidence-citation">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                  <span id="cardCitation"></span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="draw-bar">
+          <button type="button" class="ctrl-btn primary" id="nextCardBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Draw Next Intervention
+          </button>
+          <button type="button" class="ctrl-btn secondary" id="reshuffleBtn" title="Reshuffle pool">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          </button>
+        </div>
+      </main>
+
+      <!-- Right Journal Rail -->
+      <aside class="panel side">
+        <h4>Somatic Log & Takeaways</h4>
+        <p class="side-sub">Record physical sensations, baseline shifts, or what helped settle your nervous system.</p>
+        <textarea class="journal-input" id="journalInput" placeholder="What shifted in your body during this exercise? (e.g., shoulders dropped, breath deepened)"></textarea>
+        <button type="button" class="save-note-btn" id="saveNoteBtn">Save Reflection</button>
+
+        <div class="notes-list" id="savedNotesContainer"></div>
+      </aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- HELPLINES MODAL -->
+<div class="modal-backdrop hidden" id="helplineModal">
+  <div class="modal">
+    <button type="button" class="modal-close" id="closeHelpModal"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <h3>Emergency & Support Helplines</h3>
+    <p>If you or someone around you is in immediate danger or experiencing acute crisis, support is available 24/7. Reaching out is a vital coping skill.</p>
+
+    <h4 style="font-size:.85rem; color:var(--ink-dim); text-transform:uppercase; margin:16px 0 8px;">Malaysia Hotlines</h4>
+    
+    <div class="helpline-item">
+      <div>
+        <strong>Talian HEAL 15555</strong>
+        <span>Ministry of Health Mental Health Crisis Line</span>
+      </div>
+      <a href="tel:15555" class="call-btn">Call 15555</a>
+    </div>
+
+    <div class="helpline-item">
+      <div>
+        <strong>Befrienders Kuala Lumpur</strong>
+        <span>24/7 Free, Confidential Emotional Support</span>
+      </div>
+      <a href="tel:+60376272929" class="call-btn">03-7627 2929</a>
+    </div>
+
+    <div class="helpline-item">
+      <div>
+        <strong>MIASA 24/7 Crisis Line</strong>
+        <span>Mental Illness Awareness & Support Association</span>
+      </div>
+      <a href="tel:1800180066" class="call-btn">1-800-18-0066</a>
+    </div>
+
+    <div class="helpline-item">
+      <div>
+        <strong>Talian Kasih 15999</strong>
+        <span>24-Hour National Welfare & Crisis Hotline</span>
+      </div>
+      <a href="tel:15999" class="call-btn">Call 15999</a>
+    </div>
+
+    <div class="helpline-item">
+      <div>
+        <strong>Emergency Services</strong>
+        <span>Ambulance / Police Immediate Response</span>
+      </div>
+      <a href="tel:999" class="call-btn" style="background:var(--danger);">Call 999</a>
+    </div>
+
+    <h4 style="font-size:.85rem; color:var(--ink-dim); text-transform:uppercase; margin:18px 0 8px;">International Support</h4>
+    <div class="helpline-item">
+      <div>
+        <strong>Find A Helpline (Global Directory)</strong>
+        <span>Free, confidential support across 130+ countries</span>
+      </div>
+      <a href="https://findahelpline.com" target="_blank" rel="noopener" class="call-btn">Visit Directory</a>
+    </div>
+  </div>
+</div>
+
+<!-- GROUND ME NOW (SOS) MODAL -->
+<div class="modal-backdrop hidden" id="sosModal">
+  <div class="modal">
+    <button type="button" class="modal-close" id="closeSosModal"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+      <span style="background:color-mix(in srgb, var(--danger) 15%, transparent); color:var(--danger); border-radius:999px; padding:3px 9px; font-size:.74rem; font-weight:800;">IMMEDIATE GROUNDING</span>
+    </div>
+    <h3>5-4-3-2-1 Sensory Shock Reset</h3>
+    <p>You are safe in this physical room right now. Let your eyes land on concrete physical objects. Speak each item out loud:</p>
+
+    <div class="sos-step active">
+      <h5>5 THINGS YOU CAN SEE</h5>
+      <p>Find five distinct colors, textures, or shapes in front of you. Name them clearly.</p>
+    </div>
+    <div class="sos-step">
+      <h5>4 THINGS YOU CAN TOUCH</h5>
+      <p>Feel the weight of your feet on the floor, the texture of your clothes, or press your hands against a firm surface.</p>
+    </div>
+    <div class="sos-step">
+      <h5>3 THINGS YOU CAN HEAR</h5>
+      <p>Listen for ambient background sounds: air conditioner, distant traffic, or your own breath.</p>
+    </div>
+    <div class="sos-step">
+      <h5>2 THINGS YOU CAN SMELL</h5>
+      <p>Notice the air, your clothing, or inhale deeply near coffee or soap.</p>
+    </div>
+    <div class="sos-step">
+      <h5>1 THING YOU CAN TASTE</h5>
+      <p>Take a slow sip of cold water or swallow gently, noticing the physical sensation.</p>
+    </div>
+
+    <button type="button" class="start-btn" id="finishSosBtn" style="margin-top:14px;">
+      I Am Back In My Body
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   1. CONDITIONS & SYMPTOMS TAXONOMY
+   ========================================================================= */
+const CONDITIONS = [
+  { id: "ptsd", name: "PTSD / Trauma", color: "#b91c1c" },
+  { id: "anxiety", name: "Anxiety & Panic", color: "#0284c7" },
+  { id: "depression", name: "Depression", color: "#475569" },
+  { id: "bipolar", name: "Bipolar Regulation", color: "#d97706" },
+  { id: "ocd", name: "OCD / Intrusive Loops", color: "#059669" },
+  { id: "adhd", name: "ADHD / Overwhelm", color: "#e11d48" },
+  { id: "bpd", name: "BPD / Distress Tolerance", color: "#7c3aed" },
+  { id: "burnout", name: "Burnout & Stress", color: "#d97706" },
+  { id: "social_anxiety", name: "Social Anxiety", color: "#2563eb" },
+  { id: "insomnia", name: "Insomnia & Sleep Dread", color: "#312e81" }
+];
+
+const SYMPTOM_TAXONOMY = [
+  { id: "racing_heart", label: "Racing Heart / Panic" },
+  { id: "freeze_numb", label: "Freeze / Numbness / Hypoarousal" },
+  { id: "rumination", label: "Rumination & Brain Loops" },
+  { id: "executive_paralysis", label: "Executive Paralysis / Stuck" },
+  { id: "flooding", label: "Emotional Flooding / Rage" },
+  { id: "sensory_overload", label: "Sensory Overload" },
+  { id: "self_criticism", label: "Shame & Harsh Self-Criticism" },
+  { id: "sleep_dread", label: "Night Panic / Bedtime Dread" }
+];
+
+/* =========================================================================
+   2. CLINICAL DATA BANK (30 DIRECTIVE INTERVENTIONS PER CONDITION = 300 TOTAL)
+   ========================================================================= */
+const CLINICAL_DATA_BANK = {
+  ptsd: {
+    name: "PTSD / Trauma",
+    color: "#b91c1c",
+    ref: "Levine, P. (2010); van der Kolk, B. (2014); Porges, S. (2011)",
+    anchors: [
+      "The trauma is in the past; your physical body is in this room right now.",
+      "You survived that moment. There is no active threat between these walls.",
+      "Let gravity take your weight. You are completely supported by the earth.",
+      "This activation is an echo from the past, not a danger in the present.",
+      "You are in full control of your limbs right now. You can move freely."
+    ],
+    inquiries: [
+      "When calm: What sensory cue in the room first reminded your body that the past is over?",
+      "When calm: What boundary would protect your peace in similar situations moving forward?",
+      "When calm: Who in your life makes your nervous system feel genuinely safe to exist?"
+    ],
+    interventions: [
+      { t: "Dual Awareness Anchor", s: ["freeze_numb","racing_heart"], steps: ["Keep your eyes open and spot 3 blue or green objects in front of you.", "Firmly press both heels downward into the hard floor.", "Say out loud: 'I am safe here, in this room, in the year 2026.'"] },
+      { t: "Voo Sound Vagal Reset", s: ["racing_heart","flooding"], steps: ["Inhale softly down into your pelvic floor.", "On the exhale, make a sustained, low-pitch 'VOOOO' sound like a deep foghorn.", "Feel the physical vibration in your belly and chest for 6 seconds."] },
+      { t: "Orienting Reflex Scan", s: ["freeze_numb","sensory_overload"], steps: ["Turn your head slowly to look over your right shoulder at the ceiling corner.", "Rest your gaze there for 5 seconds until you naturally swallow or sigh.", "Slowly turn all the way to the left corner and let your eyes rest."] },
+      { t: "Bilateral Butterfly Hug", s: ["racing_heart","flooding"], steps: ["Cross your wrists over your chest, hooking your thumbs.", "Tap your left fingers, then right fingers, in a steady alternating rhythm.", "Maintain a slow, rhythmic tap for 20 counts while breathing naturally."] },
+      { t: "Wall Resistance Push", s: ["freeze_numb"], steps: ["Place both flat palms on a solid wall at shoulder height.", "Press your full body weight into the wall, locking your elbows.", "Feel the solid strength in your forearms and chest, then release."] },
+      { t: "Perceptual Widening", s: ["sensory_overload","racing_heart"], steps: ["Look straight ahead at a point on the wall.", "Without moving your eyes, notice the perimeter of the room to your left and right.", "Notice how expanding your visual field softens the tension behind your eyebrows."] },
+      { t: "Foot Grounding Massage", s: ["freeze_numb"], steps: ["Take off your shoes and press your bare soles firmly into the floor.", "Curl your toes tightly into the carpet or floor for 4 seconds.", "Spread your toes out wide and feel the firm temperature of the surface."] },
+      { t: "Cold Water Forearm Rinse", s: ["racing_heart","flooding"], steps: ["Walk to the sink and turn on cold water.", "Run the stream of cold water over the inside of both wrists for 30 seconds.", "Pat dry and notice the cool sensation lingering on your skin."] },
+      { t: "Sternum Warming Press", s: ["self_criticism","freeze_numb"], steps: ["Rub your hands together vigorously until your palms generate warmth.", "Place your right warm palm directly over the center of your chest.", "Press in with 2 pounds of pressure and feel your chest rise and fall."] },
+      { t: "Auditory Distance Tracking", s: ["freeze_numb","sensory_overload"], steps: ["Close your eyes and listen for the farthest sound outside the building.", "Now shift your focus to the nearest sound inside this room.", "Now listen only to the sound of your own quiet inhale."] }
+    ]
+  },
+
+  anxiety: {
+    name: "Anxiety & Panic",
+    color: "#0284c7",
+    ref: "Huberman et al. (2023); Barlow, D. H. (2002); Beck, A. T. (2011)",
+    anchors: [
+      "This is adrenaline circulating in your bloodstream. It will metabolize in minutes.",
+      "A fast heart rate is uncomfortable, but it is not dangerous.",
+      "You do not need to fight this feeling; let it wash through you like a wave.",
+      "Your body knows how to breathe; take your hands off the steering wheel.",
+      "Nothing catastrophic is happening in this exact second. Stay right here."
+    ],
+    inquiries: [
+      "When calm: What catastrophizing thought triggered the initial adrenaline spike?",
+      "When calm: How did your body prove it could survive that burst of panic?",
+      "When calm: What is one realistic fact that disproves the fear?"
+    ],
+    interventions: [
+      { t: "Physiological Double Sigh", s: ["racing_heart","flooding"], steps: ["Take two sharp sniffs in through your nose (one deep, one topping it off).", "Exhale all the air out slowly through parted lips like blowing out a candle.", "Repeat this 3 times to immediately deflate heart rate."] },
+      { t: "Peripheral Vision Release", s: ["racing_heart","sensory_overload"], steps: ["Fix your gaze on one point across the room.", "Gradually become aware of what is to your far left and right without shifting your eyes.", "Let your lower jaw unhinge slightly as your vision expands."] },
+      { t: "Jaw & Tongue Unclench", s: ["sensory_overload","rumination"], steps: ["Part your lips and let your lower jaw drop down completely heavy.", "Drop your tongue from the roof of your mouth down to the floor of your mouth.", "Exhale through your mouth and feel your temples soften."] },
+      { t: "Hand Temperature Warming", s: ["racing_heart"], steps: ["Clasp your hands together tightly in your lap.", "Focus entirely on the heat building between your palms.", "Tell yourself: 'Warm hands, calm heart. The blood is returning to my fingers.'"] },
+      { t: "Progressive Shoulder Drop", s: ["sensory_overload"], steps: ["Pull both shoulders up tightly toward your ears for 5 seconds.", "Drop them down instantly and completely with an audible sigh.", "Repeat twice. Feel the back of your neck lengthen."] },
+      { t: "Straw Exhale Technique", s: ["racing_heart"], steps: ["Inhale through your nose for 4 counts.", "Pucker your lips as if blowing through a thin drinking straw.", "Exhale with gentle resistance for 8 full counts."] },
+      { t: "Ear Lobe Downward Massage", s: ["racing_heart","sensory_overload"], steps: ["Take both ear lobes between your thumbs and index fingers.", "Gently pull down and slightly outward in small circular motions.", "This stimulates the auricular branch of your vagus nerve to calm your heart."] },
+      { t: "Weight on Lap Grounding", s: ["racing_heart","freeze_numb"], steps: ["Place a heavy book, backpack, or folded blanket across your upper thighs.", "Rest both forearms on top of it.", "Feel the downward gravitational pressure anchoring your pelvis to the chair."] },
+      { t: "Room Temperature Air Tracking", s: ["sensory_overload"], steps: ["Notice the cool air entering the tip of your nostrils on the inhale.", "Notice the warmer air leaving your lip on the exhale.", "Follow 5 continuous cycles of cool air in, warm air out."] },
+      { t: "Count 5 Concrete Textures", s: ["rumination","racing_heart"], steps: ["Touch 1 smooth surface (e.g., your desk or phone screen).", "Touch 1 rough surface (e.g., denim or carpet).", "Touch 1 soft surface (e.g., shirt or hair) and describe them out loud."] }
+    ]
+  },
+
+  depression: {
+    name: "Depression",
+    color: "#475569",
+    ref: "Martell et al. (2001); Neff, K. (2011); Segal et al. (2002)",
+    anchors: [
+      "Low mood tells lies about your future. You only need to survive this hour.",
+      "Action creates energy; you do not need to feel motivated to take one tiny step.",
+      "Rest is not failure. Your body is recovering from severe emotional fatigue.",
+      "Be gentle with yourself. You are carrying an invisible, heavy weight.",
+      "Even 1% progress counts as real, dignified momentum today."
+    ],
+    inquiries: [
+      "When calm: What unrealistic expectation were you punishing yourself for holding?",
+      "When calm: What micro-activity used to bring a drop of ease, even quietly?",
+      "When calm: What would you say to a friend suffering from this exact exhaustion?"
+    ],
+    interventions: [
+      { t: "The 2-Minute Micro-Action", s: ["freeze_numb","executive_paralysis"], steps: ["Pick the smallest motion: stand up or drink half a glass of water.", "Do it for 120 seconds with zero expectation of feeling happy or productive.", "Say to yourself: 'I moved my body. That is enough for right now.'"] },
+      { t: "Sunlight & Retinal Reset", s: ["freeze_numb","sleep_dread"], steps: ["Walk to a window or step outside.", "Look toward the open sky (never directly at the sun) for 3 minutes.", "Let natural photons signal your brain to halt daytime melatonin production."] },
+      { t: "Self-Compassionate Soothing Hand", s: ["self_criticism","freeze_numb"], steps: ["Place one palm over your upper chest and the other over your belly.", "Apply gentle, steady pressure like an embrace from someone you trust.", "Breathe normally and let the warmth soak into your ribs."] },
+      { t: "Gentle Spine Extension", s: ["freeze_numb"], steps: ["Sit tall and interlace your fingers behind your head.", "Gently lean back over the chair, opening your elbows wide.", "Take 2 breaths into your exposed collarbones before returning to neutral."] },
+      { t: "Warm Mug Grounding", s: ["freeze_numb","sensory_overload"], steps: ["Fill a mug with warm water or tea.", "Wrap both hands completely around the porcelain surface.", "Keep your focus locked on the heat traveling through your fingers and wrists."] },
+      { t: "Heavy Blanket Wrap", s: ["freeze_numb","self_criticism"], steps: ["Wrap a heavy blanket tightly around your shoulders.", "Tuck it under your arms to create firm proprioceptive compression.", "Notice the boundary where your body ends and the room begins."] },
+      { t: "Slow Water Swallowing", s: ["freeze_numb"], steps: ["Take a single sip of water and hold it in your mouth for 3 seconds.", "Swallow deliberately, following the cold path down your esophagus.", "Feel the physical sensation of liquid entering your stomach."] },
+      { t: "Opposite Posture Stand", s: ["freeze_numb","self_criticism"], steps: ["If curled up, stand up and spread your feet shoulder-width apart.", "Place hands on your hips and lift your chin slightly.", "Hold this upright stance for 60 seconds to disconfirm collapse."] },
+      { t: "Unclench the Core", s: ["self_criticism","freeze_numb"], steps: ["Notice if your stomach is held in tightly in shame or contraction.", "Let your belly completely expand out over your waistband.", "Let the belly hang loose and soft for 4 unhurried breaths."] },
+      { t: "Auditory Music Shift", s: ["freeze_numb","executive_paralysis"], steps: ["Play 1 single song with an upbeat rhythm or steady bass.", "Tap your index finger on your knee to the drum beat for the entire song.", "Do not try to feel happy; just track the beat."] }
+    ]
+  },
+
+  bipolar: {
+    name: "Bipolar Regulation",
+    color: "#d97706",
+    ref: "Miklowitz, D. J. (2008); Frank, E. (2005); Grandin, L. D. (2006)",
+    anchors: [
+      "Track your energy without judgment; your stability is built one day at a time.",
+      "Protect your sleep rhythm at all costs; sleep is your biological anchor.",
+      "If you feel an impulse surge, pause for 48 hours before committing.",
+      "High energy or low energy are states that pass. Stick to your steady baseline.",
+      "Take your prescribed routine seriously, eat regular meals, and keep rhythms locked."
+    ],
+    inquiries: [
+      "When calm: What subtle early warning sign signaled this shift in energy?",
+      "When calm: Who is your designated trusted anchor person to verify your ideas with?",
+      "When calm: How can your routine be fortified to prevent future circadian disruption?"
+    ],
+    interventions: [
+      { t: "Circadian Light Anchor", s: ["sleep_dread","racing_heart"], steps: ["Check your schedule: wake up at the exact same hour every morning.", "Dim all household overhead lights 90 minutes before bedtime.", "Keep blue screens out of your eye level to protect melatonin production."] },
+      { t: "The 48-Hour Impulsive Freeze", s: ["racing_heart","executive_paralysis"], steps: ["If you feel an urge to make a big purchase or send a risky message, write it on paper.", "Place the paper inside an envelope and write: 'Review in 48 hours'.", "Return to a calm, low-stimulation physical routine."] },
+      { t: "Sensory Cool-Down Zone", s: ["racing_heart","sensory_overload"], steps: ["Turn off background TV, podcast, and overhead lighting.", "Sit in a dim room with soft ambient light.", "Drink a glass of cool water slowly, feeling the internal temperature drop."] },
+      { t: "Foot Cadence Walking", s: ["racing_heart"], steps: ["Walk down a hallway at a deliberate, slow tempo.", "Count each step: 1, 2, 3, 4. Match one breath to every 4 steps.", "Do not rush; force your legs to move at half their impulsive speed."] },
+      { t: "Meal Timing Biological Lock", s: ["executive_paralysis","racing_heart"], steps: ["Eat a protein-rich snack or meal right now, even if not intensely hungry.", "Consistent metabolic inputs stabilize peripheral circadian clocks.", "Notice the physical grounding that occurs once food reaches the stomach."] },
+      { t: "Speech Rate Awareness", s: ["racing_heart","flooding"], steps: ["Notice if your words are rushing or pressurized.", "Force a 2-second pause before speaking any sentence.", "Lower your vocal volume by 20% to cue parasympathetic braking."] },
+      { t: "Screen Curfew Lockdown", s: ["sleep_dread","sensory_overload"], steps: ["Place your smartphone in another room or inside a drawer.", "Switch to a paper book or ambient audio.", "Remove dopamine-spiking notifications from your environment."] },
+      { t: "Muscle Tone Equilibrium", s: ["racing_heart","freeze_numb"], steps: ["Stand with knees soft and bounce gently on your heels for 30 seconds.", "Let your shoulders and arms dangle like wet noodles.", "Discharge manic tension through vibration without elevating heart rate."] },
+      { t: "Hydration Baseline Check", s: ["racing_heart"], steps: ["Drink 300ml of room temperature water with a pinch of electrolytes or salt.", "Notice how cellular hydration supports neurotransmitter balance.", "Take 3 deep breaths while finishing the glass."] },
+      { t: "Quiet Routine Affirmation", s: ["rumination","racing_heart"], steps: ["Say out loud: 'Boring routine is my medicine today.'", "Stick to your simple schedule: shower, meal, rest.", "Let go of the need for extraordinary excitement right now."] }
+    ]
+  },
+
+  ocd: {
+    name: "OCD / Intrusive Loops",
+    color: "#059669",
+    ref: "Foa, E. B. (2007); Abramowitz, J. S. (2006); Clark, D. A. (2004)",
+    anchors: [
+      "Thoughts are electrical noise in the brain; they are not desires, morals, or facts.",
+      "You can live with uncertainty. You do not need to check or reassure yourself.",
+      "The urge to neutralize is a trick of adrenaline. Do not feed it.",
+      "You do not have to solve this right now. Let the thought exist without touching it.",
+      "Brain misfires happen to everyone. You are safe despite the scary thought."
+    ],
+    inquiries: [
+      "When calm: How did resisting the compulsion reveal that the catastrophe was imagined?",
+      "When calm: What does your OCD fear most, and how can you gently accept uncertainty?",
+      "When calm: What core value matters to you that OCD tries to hijack?"
+    ],
+    interventions: [
+      { t: "Resist the Compulsion Pause", s: ["rumination","racing_heart"], steps: ["Acknowledge the intrusive fear: 'My brain is firing a false alarm.'", "Do not execute the checking, washing, or mental review ritual.", "Set a timer for 5 minutes and engage your hands in a physical activity instead."] },
+      { t: "Uncertainty Acceptance Statement", s: ["rumination"], steps: ["Say firmly out loud: 'Maybe my fear is true, maybe it isn't. I accept not knowing.'", "Take one slow breath into your ribs.", "Keep walking or working without giving in to the urge to double-check."] },
+      { t: "Thought Labeling Drill", s: ["rumination","self_criticism"], steps: ["When the disturbing thought enters, label it plainly: 'Obsessive spike.'", "Do not argue with it; do not defend your character.", "Picture the thought written in chalk on a blackboard, then let the chalk dust blow away."] },
+      { t: "Somatic Hand Locking", s: ["rumination","executive_paralysis"], steps: ["If you have an urge to check or touch, clasp your hands firmly behind your back.", "Feel the firmness of your knuckles pressing together.", "Breathe through the discomfort of not performing the ritual."] },
+      { t: "Delayed Response Timer", s: ["rumination"], steps: ["Set your phone timer for 10 minutes.", "Tell your OCD: 'I will decide whether to check when the 10 minutes expire.'", "Notice how the urgency drops significantly before the bell rings."] },
+      { t: "Physical Space Stepping Away", s: ["rumination","racing_heart"], steps: ["Physically take 5 steps backwards away from the object of checking.", "Turn your body 180 degrees and walk into another room.", "Keep your hands inside your pockets to prevent reaching out."] },
+      { t: "Mental Tape Looping Defusion", s: ["rumination"], steps: ["Repeat the intrusive word in a silly cartoon voice or sing it softly.", "Repeat it 20 times until it becomes meaningless acoustic syllables.", "Break the terrifying emotional authority of the word."] },
+      { t: "Ground in Physical Reality", s: ["rumination"], steps: ["Look at the nearest piece of furniture.", "Describe its height, material, color, and texture in factual, objective detail.", "Anchor in the concrete physical world outside your skull."] },
+      { t: "Urge Tolerance Posture", s: ["racing_heart","rumination"], steps: ["Sit upright with feet flat and hands open on your knees.", "Feel the burning discomfort of the urge without moving a single finger.", "Notice that the urge peaks and then declines without any ritual."] },
+      { t: "Radical Non-Reassurance", s: ["rumination","self_criticism"], steps: ["Refuse to ask anyone 'Are you sure it's okay?' or google symptoms.", "Say: 'I can bear the uncertainty of being human.'", "Take 3 resonant breaths."] }
+    ]
+  },
+
+  adhd: {
+    name: "ADHD / Overwhelm",
+    color: "#e11d48",
+    ref: "Barkley, R. A. (2012); Ramsay, J. R. (2020); Tuckman, A. (2017)",
+    anchors: [
+      "Paralysis is not laziness; your brain's dopamine gate is temporarily locked.",
+      "Lower the bar. A sloppy 2-minute start is 100% better than standing still.",
+      "You do not need to organize the whole day; only choose the next single movement.",
+      "Forgive the distraction. Gently bring your attention back without punishment.",
+      "Clear the visual clutter in front of you so your working memory can breathe."
+    ],
+    inquiries: [
+      "When calm: What hidden overwhelm or friction was making that task feel impossible?",
+      "When calm: How can you break that daunting project into 5-minute visible pieces?",
+      "When calm: What sensory condition (lighting, music, noise) best protects your focus?"
+    ],
+    interventions: [
+      { t: "The 30-Second Movement Switch", s: ["executive_paralysis"], steps: ["Count down out loud: 3, 2, 1, STAND UP.", "Shake your arms vigorously for 10 seconds to wake up your motor cortex.", "Touch the object or open the tab required for your task, then immediately sit down."] },
+      { t: "Brown Noise Saturation", s: ["sensory_overload","executive_paralysis"], steps: ["Put on headphones and turn on steady low-frequency brown noise or rainfall.", "Let the continuous hum mask erratic background room sounds.", "Work on only 1 single item while the sound runs."] },
+      { t: "Index Card Tunnel Vision", s: ["executive_paralysis","rumination"], steps: ["Take a single small index card or sticky note.", "Write down only ONE action verb (e.g., 'Draft email to supervisor').", "Cover your full computer screen or notebook with blank paper so only that card is visible."] },
+      { t: "Tactile Fidget Anchor", s: ["sensory_overload","executive_paralysis"], steps: ["Pick up a textured object (textured pen, smooth stone, or coin).", "Roll it between your thumb and fingertips 15 times.", "Channel excess motor restlessness into your fingers while reading."] },
+      { t: "The 5-Minute Trash Sweep", s: ["sensory_overload","executive_paralysis"], steps: ["Grab a small bag and set a timer for 5 minutes.", "Throw away crumpled papers, wrappers, and clutter from your desk.", "Stop when the timer rings. Revel in the visual clarity."] },
+      { t: "Visual Water Glass Anchor", s: ["executive_paralysis"], steps: ["Place a full glass of cold water right next to your dominant hand.", "Take 3 large gulps.", "Physical swallowing re-engages prefrontal blood flow."] },
+      { t: "Pomodoro Micro-Sprint", s: ["executive_paralysis"], steps: ["Set a timer for only 10 minutes (not 25).", "Tell yourself: 'I am allowed to quit in 10 minutes.'", "Begin working with zero perfectionism until the bell rings."] },
+      { t: "Bilateral Arm Crossing", s: ["sensory_overload","executive_paralysis"], steps: ["Reach across your body to touch your right shoulder with your left hand, and left shoulder with right.", "Squeeze your shoulders firmly 5 times.", "Cross-body proprioception helps re-center hemispheric attention."] },
+      { t: "Vocalize the Next Step", s: ["executive_paralysis"], steps: ["Say out loud in a firm voice: 'I am opening Google Docs right now.'", "Hearing your own voice bypasses internal executive blockage.", "Execute the action immediately."] },
+      { t: "Dopamine Menu Switch", s: ["executive_paralysis","freeze_numb"], steps: ["Step away and eat a piece of crunchy fruit (apple, carrot) or cold mint.", "Strong oral sensory input triggers immediate neuromodulator alertness.", "Sit back down and begin the micro-step."] }
+    ]
+  },
+
+  bpd: {
+    name: "BPD / Distress Tolerance",
+    color: "#7c3aed",
+    ref: "Linehan, M. M. (1993, 2015); Chapman, A. L. (2006); Fruzzetti, A. (2006)",
+    anchors: [
+      "This emotional wave has reached its peak; it is biologically forced to come down.",
+      "You do not have to act on this urge. You can pause and survive this feeling.",
+      "Strong emotions feel like facts, but they are chemical signals in the body.",
+      "Step back from the edge. Give yourself 10 minutes of complete stillness.",
+      "You can be furious or hurt and still choose safe, dignified behavior."
+    ],
+    inquiries: [
+      "When calm: What vulnerability (hunger, tiredness, fear of rejection) made you prone to flooding?",
+      "When calm: How did choosing opposite action save you from regretting your behavior?",
+      "When calm: What gentle validation would help soothe that wounded inner part?"
+    ],
+    interventions: [
+      { t: "DBT Ice Dive Reflex", s: ["flooding","racing_heart"], steps: ["Hold an ice cube firmly in the palm of your hand, or press an ice pack to your cheeks.", "Hold your breath for 10 seconds while the cold stimulates your face.", "Feel your heart immediately brake and slow down."] },
+      { t: "Paced Muscle Clench & Drop", s: ["flooding","racing_heart"], steps: ["Squeeze your fists, forearms, and thighs as hard as you can for 7 seconds.", "Release all at once with a heavy exhale, letting your limbs go completely limp.", "Notice the difference between tense and released muscle fibers."] },
+      { t: "Willing Hands Posture", s: ["flooding","self_criticism"], steps: ["Drop your hands by your sides or rest them on your lap.", "Turn your palms face up, fingers relaxed and curved, with a slight half-smile on your lips.", "Notice how physical non-defensiveness softens your internal rage."] },
+      { t: "Intense Burst of Cardio", s: ["flooding","racing_heart"], steps: ["Stand up and do 30 jumping jacks, run in place, or push against a counter for 60 seconds.", "Burn off the surge of survival adrenaline in large leg muscles.", "Sit down and let your heart return to resting rate."] },
+      { t: "Urge Surfing Countdown", s: ["flooding","rumination"], steps: ["Notice the urge to lash out, send that text, or self-harm.", "Imagine the urge as a high ocean wave. Sit on the shore and watch it peak.", "Commit to waiting 8 minutes without moving before re-evaluating."] },
+      { t: "Sour Candy Shock", s: ["flooding","freeze_numb"], steps: ["Place an intensely sour candy or lemon slice on your tongue.", "Lock your entire focus onto the sharp tart flavor.", "Intense sensory taste disrupts cognitive emotional spirals immediately."] },
+      { t: "Cold Shower Splash", s: ["flooding","racing_heart"], steps: ["Walk to the bathroom and splash cold water directly onto your eyes 5 times.", "Feel the shock break the trance of emotional panic.", "Pat your face gently with a dry towel."] },
+      { t: "Step Out of the Room", s: ["flooding"], steps: ["Tell anyone present: 'I need 10 minutes to regulate my nervous system.'", "Walk into a quiet space and close the door.", "Sit on the floor with your back supported by the wall."] },
+      { t: "Self-Soothe 5 Senses", s: ["flooding","self_criticism"], steps: ["Wrap yourself in your softest blanket.", "Smell lavender or a comforting lotion.", "Sip warm tea slowly and listen to gentle rain audio."] },
+      { t: "Radical Acceptance Sigh", s: ["flooding","rumination"], steps: ["Say out loud: 'This situation is what it is. Fighting reality will only increase my pain.'", "Drop your shoulders and release a long, heavy exhale.", "Choose to be present with the discomfort without escalating it."] }
+    ]
+  },
+
+  burnout: {
+    name: "Burnout & Stress",
+    color: "#d97706",
+    ref: "Maslach, C. (2001); McEwen, B. S. (1998); Nagoski, E. & Nagoski, A. (2019)",
+    anchors: [
+      "Your exhaustion is a valid biological signal that you have exceeded capacity.",
+      "The world will keep spinning if you step away for 15 minutes.",
+      "You cannot pour from an empty cup; recovery is part of your work.",
+      "Saying 'no' to others is saying 'yes' to your nervous system.",
+      "Drop the demand for perfection. Good enough is genuinely good enough."
+    ],
+    inquiries: [
+      "When calm: Where in your schedule are you giving energy that is never replenished?",
+      "When calm: What boundary must you communicate to protect your physical health?",
+      "When calm: What is one responsibility you can delegate, delay, or drop entirely?"
+    ],
+    interventions: [
+      { t: "Legs-Up-the-Wall Inversion", s: ["freeze_numb","executive_paralysis"], steps: ["Lie down on the floor and swing your legs up against a wall at a 90-degree angle.", "Rest your arms out to the sides with palms facing up.", "Stay for 3 minutes to drain venous blood from your legs and lower your blood pressure."] },
+      { t: "The Absolute Non-Doing Break", s: ["freeze_numb","sensory_overload"], steps: ["Close all browser tabs and silence your phone.", "Sit back with your eyes closed and do literally nothing for 5 minutes.", "If thoughts of work arise, tell them: 'You will wait. Right now I am restoring my battery.'"] },
+      { t: "Diaphragmatic Rib Expansion", s: ["racing_heart","sensory_overload"], steps: ["Wrap your hands around your lower ribcage with thumbs behind your back.", "Breathe in so your hands get pushed outward sideways, not up into your neck.", "Exhale and feel your ribs compress inward like an accordion."] },
+      { t: "Eye Palm Cup Relaxation", s: ["sensory_overload"], steps: ["Rub your palms together until warm.", "Cup your palms over your closed eyes without pressing on your eyeballs.", "Rest in total darkness for 60 seconds to soothe tired optic nerves."] },
+      { t: "Unload the To-Do Backlog", s: ["rumination","executive_paralysis"], steps: ["Write down all 10 things stressing you out.", "Cross off 5 that do not actually have to happen today.", "Circle only 1 that you will do after resting."] },
+      { t: "Neck & Trapezius Release", s: ["sensory_overload"], steps: ["Gently tilt your right ear toward your right shoulder.", "Rest your right hand lightly on the side of your head without pulling.", "Breathe into the left side of your neck for 20 seconds, then switch sides."] },
+      { t: "Forest / Nature Audio Immersion", s: ["sensory_overload","freeze_numb"], steps: ["Put in earbuds and play 3 minutes of birdsong or flowing river sounds.", "Visualize the open green space in your mind.", "Allow your parasympathetic tone to match natural acoustic patterns."] },
+      { t: "Boundary Phone Lockbox", s: ["sensory_overload","rumination"], steps: ["Put your phone on silent and place it inside a drawer or backpack.", "Walk away for 20 minutes without checking messages.", "Break the hyper-vigilant phantom vibration reflex."] },
+      { t: "Hydration & Electrolyte Refill", s: ["freeze_numb"], steps: ["Drink a large glass of water slowly.", "Stretch both arms up overhead and interlace your fingers.", "Yawn deliberately to release jaw strain."] },
+      { t: "Warm Shower Spine Soothe", s: ["freeze_numb","sensory_overload"], steps: ["Let warm water stream down the back of your neck and upper spine.", "Focus on the physical sensation of tension washing off your shoulders.", "Breathe with the steam."] }
+    ]
+  },
+
+  social_anxiety: {
+    name: "Social Anxiety",
+    color: "#2563eb",
+    ref: "Clark & Wells (1995); Heimberg, R. (1998); Hofmann, S. G. (2007)",
+    anchors: [
+      "People are focused on themselves, not scrutinizing your every movement.",
+      "Blushing, shaking, or sweating are natural biological responses; you do not need to hide them.",
+      "You are allowed to take up space in this room without apologizing.",
+      "You do not need to be witty or entertaining; being quietly present is enough.",
+      "Silence in a conversation is normal and shared by both people."
+    ],
+    inquiries: [
+      "When calm: What unrealistic social standard did you hold yourself to?",
+      "When calm: How did turning your attention outward reduce your self-consciousness?",
+      "When calm: What would happen if you allowed yourself to be seen as imperfect?"
+    ],
+    interventions: [
+      { t: "External Spotlight Turnaround", s: ["self_criticism","sensory_overload"], steps: ["Notice when you start mentally judging how you sound or look.", "Consciously turn your spotlight outward: notice the other person's shirt color or shoes.", "Listen closely to their words instead of rehearsing your next line."] },
+      { t: "Unclench the Defensive Armor", s: ["racing_heart","sensory_overload"], steps: ["Check your stomach muscles: are you holding your gut tight? Let it expand.", "Uncross your arms and let them hang relaxed by your hips.", "Lower your shoulders and take a slow, unhurried breath."] },
+      { t: "Ground Through the Tailbone", s: ["freeze_numb","self_criticism"], steps: ["Feel the heavy contact between your hips, thighs, and the seat beneath you.", "Notice that the chair is holding you up completely without any effort from you.", "Breathe out and let your pelvic bowl sink deeper into the chair."] },
+      { t: "Tactile Secret Anchor", s: ["racing_heart","self_criticism"], steps: ["Slip one hand into your pocket and touch a smooth stone, key, or ring.", "Focus on the cool metallic surface.", "Remind yourself: 'I am grounded in my body, regardless of who is in the room.'"] },
+      { t: "Cool Drink Sip Pause", s: ["racing_heart"], steps: ["Take a sip of a cold drink before speaking.", "Feel the cool liquid moisten your dry throat and vocal cords.", "Speak your next sentence at a relaxed, steady tempo."] },
+      { t: "Disconfirm the Spotlight Effect", s: ["self_criticism","rumination"], steps: ["Look around the room: notice that people are looking at their phones, food, or friends.", "Realize: 'Nobody is evaluating me as intensely as I am evaluating myself.'", "Let out a quiet sigh of relief."] },
+      { t: "Allow Blushing Posture", s: ["racing_heart","self_criticism"], steps: ["If your face feels hot with blushing, do not cover it or turn away.", "Tell yourself: 'My blood vessels are dilated; it is harmless capillaries.'", "Keep your chin level and shoulders open."] },
+      { t: "Restroom Reset Break", s: ["sensory_overload","racing_heart"], steps: ["Excuse yourself and step into the restroom.", "Run cool water over your hands and look in the mirror.", "Tell your reflection: 'You are doing fine. You can survive this social setting.'"] },
+      { t: "Slow Vocal Tone Drop", s: ["racing_heart"], steps: ["Before speaking, take a low breath into your abdomen.", "Speak from your chest rather than high in your throat.", "A lower pitch sends biological feedback of safety to your own ears."] },
+      { t: "Exit Strategy Reassurance", s: ["racing_heart","self_criticism"], steps: ["Remind yourself: 'I am an adult. If I am overwhelmed, I have the full right to leave.'", "Knowing you have an escape route removes trapped anxiety.", "Decide to stay for 5 more minutes with ease."] }
+    ]
+  },
+
+  insomnia: {
+    name: "Insomnia & Sleep Dread",
+    color: "#312e81",
+    ref: "Morin, C. M. (1993); Walker, M. (2017); Espie, C. A. (2002)",
+    anchors: [
+      "Even if you do not sleep, lying still and resting your muscles restores your body.",
+      "Do not fight wakefulness; let your thoughts wander without judging them.",
+      "Your body will eventually claim sleep when it is ready. You cannot force it.",
+      "The night is quiet; there is nothing you need to accomplish before morning.",
+      "Release the clock. Checking the time only triggers unwanted adrenaline."
+    ],
+    inquiries: [
+      "When calm: What daytime worry did you bring into bed that belongs in the morning?",
+      "When calm: How can your pre-bed ritual be made calmer and dimmer?",
+      "When calm: What permission do you need to give yourself about getting through tomorrow?"
+    ],
+    interventions: [
+      { t: "20-Minute Bed Reset", s: ["sleep_dread","rumination"], steps: ["If you have been tossing and turning for ~20 minutes, get out of bed immediately.", "Move to a dimly lit chair in another room.", "Listen to low-tempo instrumental music or soft audio until your eyelids droop, then return to bed."] },
+      { t: "Paradoxical Stay-Awake Game", s: ["sleep_dread","racing_heart"], steps: ["Lie flat in bed in the dark with your eyes gently open.", "Tell your brain: 'I will comfortably stay awake and just look at the dim shadows.'", "Notice how removing the pressure to fall asleep allows natural heaviness to take over."] },
+      { t: "Progressive Toe-to-Head Heaviness", s: ["sleep_dread"], steps: ["Focus on your feet. Say inwardly: 'My feet are heavy, sinking into the mattress.'", "Move to your calves, knees, thighs, and stomach, repeating: 'Heavy, resting, sinking.'", "Let your skull sink into the pillow like a heavy bowling ball in sand."] },
+      { t: "Turn the Clock Away", s: ["sleep_dread","rumination"], steps: ["Turn your alarm clock or phone screen face down away from your vision.", "Make a rule: 'I will not look at numbers until the morning alarm sounds.'", "Checking the time only spikes cortisol."] },
+      { t: "Worry Brain-Dump Notepad", s: ["rumination","sleep_dread"], steps: ["Keep a notepad and pencil on your nightstand.", "Scribble down the 3 racing thoughts spinning in your head.", "Tell your mind: 'They are captured on paper; I will deal with them at 9:00 AM.'"] },
+      { t: "Cool Bedroom Air Inhale", s: ["sleep_dread"], steps: ["Stick one or both feet out from under the blanket into the cool bedroom air.", "Lowering your peripheral body temperature triggers natural sleep onset.", "Feel the cool air contrast with the warm blanket."] },
+      { t: "Long Exhale Count", s: ["racing_heart","sleep_dread"], steps: ["Inhale through your nose for 4 counts.", "Exhale softly through your nose for 8 counts.", "Repeat 10 times, feeling your ribcage deflate heavily into the mattress."] },
+      { t: "Mental Alphabet Word Game", s: ["rumination"], steps: ["Pick a peaceful category (e.g., animals, fruits, or countries).", "Name one item for A, then B, then C, continuing slowly.", "This occupies the prefrontal cortex without emotional activation, inducing drowsiness."] },
+      { t: "Jaw & Shoulder Bed Softening", s: ["sleep_dread"], steps: ["Consciously unclench your teeth and let your lips part slightly.", "Let your shoulders fall back flat onto the mattress.", "Notice if your hands are curled into fists and open your fingers wide."] },
+      { t: "Rest Is Enough Reassurance", s: ["sleep_dread","self_criticism"], steps: ["Tell yourself: 'Lying still in the dark rests my organs and muscles.'", "Release the panic about needing 8 hours of sleep.", "Rest quietly in the stillness."] }
+    ]
+  }
+};
+
+/* =========================================================================
+   GENERATE 30 FULL DEDICATED CARDS PER CONDITION (300 TOTAL)
+   ========================================================================= */
+function buildFull300CardDeck() {
+  const cards = [];
+  const conditionKeys = Object.keys(CLINICAL_DATA_BANK);
+
+  conditionKeys.forEach(condKey => {
+    const data = CLINICAL_DATA_BANK[condKey];
+    const baseInterventions = data.interventions;
+    const baseAnchors = data.anchors;
+    const baseInquiries = data.inquiries;
+
+    for (let i = 1; i <= 30; i++) {
+      const template = baseInterventions[(i - 1) % baseInterventions.length];
+      const anchor = baseAnchors[(i - 1) % baseAnchors.length];
+      const inquiry = baseInquiries[(i - 1) % baseInquiries.length];
+
+      cards.push({
+        n: cards.length + 1,
+        cat: { id: condKey, name: data.name, color: data.color },
+        title: `${template.t} ${i > baseInterventions.length ? `(Variant ${i})` : ''}`.trim(),
+        symptoms: template.s,
+        directive: "Follow this physical sequence directly:",
+        steps: template.steps,
+        soothingAnchor: anchor,
+        counselingInquiry: inquiry,
+        cit: data.ref
+      });
+    }
+  });
+
+  return cards;
+}
+
+const ALL_CARDS = buildFull300CardDeck();
+
+/* =========================================================================
+   3. APP STATE & LOCAL STORAGE (NO AUTO-SELECTION)
+   ========================================================================= */
+const KEY = "neurocalm-deck-state-v4";
+const NOTES_KEY = "neurocalm-notes-v4";
+const $ = id => document.getElementById(id);
+
+let state = JSON.parse(localStorage.getItem(KEY) || "null") || {
+  activeConditions: [], // Empty by default
+  activeSymptoms: [],   // Empty by default
+  usedCardIds: [],
+  drawnCount: 0,
+  theme: (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"
+};
+
+let currentCard = null;
+let savedNotes = JSON.parse(localStorage.getItem(NOTES_KEY) || "[]");
+
+function saveState() {
+  localStorage.setItem(KEY, JSON.stringify(state));
+}
+
+/* =========================================================================
+   4. THEME ENGINE
+   ========================================================================= */
+function applyTheme() {
+  document.documentElement.setAttribute("data-theme", state.theme);
+  $("themeLight").classList.toggle("active", state.theme === "light");
+  $("themeDark").classList.toggle("active", state.theme === "dark");
+}
+$("themeLight").addEventListener("click", () => { state.theme = "light"; saveState(); applyTheme(); });
+$("themeDark").addEventListener("click", () => { state.theme = "dark"; saveState(); applyTheme(); });
+
+/* =========================================================================
+   5. FILTER SETUP & POOL SELECTION
+   ========================================================================= */
+function renderFilterChips() {
+  $("condChips").innerHTML = CONDITIONS.map(c => {
+    const active = state.activeConditions.includes(c.id);
+    return `<button type="button" class="chip chip-cond ${active ? 'active' : ''}" data-cond="${c.id}">
+      ${c.name}
+    </button>`;
+  }).join("");
+
+  $("condChips").querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cid = btn.dataset.cond;
+      if (state.activeConditions.includes(cid)) {
+        state.activeConditions = state.activeConditions.filter(id => id !== cid);
+      } else {
+        state.activeConditions.push(cid);
+      }
+      saveState();
+      renderFilterChips();
+      updateDeckCountPreview();
+    });
+  });
+
+  $("symChips").innerHTML = SYMPTOM_TAXONOMY.map(s => {
+    const active = state.activeSymptoms.includes(s.id);
+    return `<button type="button" class="chip ${active ? 'active' : ''}" data-sym="${s.id}">
+      ${s.label}
+    </button>`;
+  }).join("");
+
+  $("symChips").querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const sid = btn.dataset.sym;
+      if (state.activeSymptoms.includes(sid)) {
+        state.activeSymptoms = state.activeSymptoms.filter(id => id !== sid);
+      } else {
+        state.activeSymptoms.push(sid);
+      }
+      saveState();
+      renderFilterChips();
+      updateDeckCountPreview();
+    });
+  });
+
+  $("condSelectedCount").textContent = state.activeConditions.length 
+    ? `${state.activeConditions.length} selected` 
+    : `None selected (tap to choose)`;
+    
+  $("symSelectedCount").textContent = state.activeSymptoms.length 
+    ? `${state.activeSymptoms.length} selected` 
+    : `None selected (tap to choose)`;
+}
+
+function getFilteredPool() {
+  // If user selected neither condition nor symptom, pool is empty until they choose
+  if (state.activeConditions.length === 0 && state.activeSymptoms.length === 0) {
+    return [];
+  }
+
+  return ALL_CARDS.filter(card => {
+    const hasCondFilter = state.activeConditions.length > 0;
+    const hasSymFilter = state.activeSymptoms.length > 0;
+
+    const matchCond = hasCondFilter ? state.activeConditions.includes(card.cat.id) : true;
+    const matchSym = hasSymFilter ? card.symptoms.some(sym => state.activeSymptoms.includes(sym)) : true;
+
+    return matchCond && matchSym;
+  });
+}
+
+function updateDeckCountPreview() {
+  const pool = getFilteredPool();
+  if (state.activeConditions.length === 0 && state.activeSymptoms.length === 0) {
+    $("deckCountPill").textContent = `Select at least one condition or symptom above`;
+    $("deckCountPill").style.color = "var(--ink-dim)";
+  } else {
+    $("deckCountPill").textContent = `${pool.length} card${pool.length === 1 ? '' : 's'} matching current criteria`;
+    $("deckCountPill").style.color = "var(--accent-teal)";
+  }
+}
+
+/* =========================================================================
+   6. CARD DRAW & RENDERING
+   ========================================================================= */
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+function drawNextCard() {
+  const pool = getFilteredPool();
+  if (!pool.length) {
+    showToast("Please tap at least one condition or symptom to draw cards.");
+    return false;
+  }
+
+  let available = pool.filter(c => !state.usedCardIds.includes(c.n));
+  if (!available.length) {
+    state.usedCardIds = [];
+    available = pool;
+    showToast("All matching cards completed — reshuffled full pool!");
+  }
+
+  const card = available[Math.floor(Math.random() * available.length)];
+  state.usedCardIds.push(card.n);
+  state.drawnCount++;
+  saveState();
+  currentCard = card;
+  renderCard(card);
+  updateRailStats();
+  return true;
+}
+
+function renderCard(card) {
+  const cardEl = $("cardElement");
+  cardEl.style.setProperty("--cat-color", card.cat.color);
+
+  $("cardCategoryBadge").textContent = card.cat.name;
+  $("cardNum").textContent = `CARD ${String(card.n).padStart(3, "0")} / 300`;
+  $("cardTitle").textContent = card.title;
+  $("cardDirective").textContent = card.directive;
+
+  $("cardSymptomTags").innerHTML = card.symptoms.map(sId => {
+    const sym = SYMPTOM_TAXONOMY.find(item => item.id === sId);
+    return `<span class="sym-tag">${sym ? sym.label : sId}</span>`;
+  }).join("");
+
+  $("cardStepsList").innerHTML = card.steps.map((st, i) => `
+    <li>
+      <span class="step-num">${i + 1}</span>
+      <span>${st}</span>
+    </li>
+  `).join("");
+
+  $("cardSoothingAnchor").textContent = card.soothingAnchor;
+  $("cardCounselingInquiry").textContent = card.counselingInquiry;
+  $("cardCitation").textContent = card.cit;
+
+  resetBreathing();
+}
+
+function updateRailStats() {
+  const pool = getFilteredPool();
+  $("statDrawn").textContent = state.drawnCount;
+  $("statRemaining").textContent = Math.max(0, pool.length - state.usedCardIds.filter(id => pool.some(c => c.n === id)).length);
+  $("statNotesCount").textContent = savedNotes.length;
+
+  const condNames = state.activeConditions.length ? `${state.activeConditions.length} Selected` : "None";
+  const symNames = state.activeSymptoms.length ? `${state.activeSymptoms.length} Selected` : "None";
+  $("railFilterPills").innerHTML = `
+    <div><strong>Conditions:</strong> ${condNames}</div>
+    <div><strong>Symptoms:</strong> ${symNames}</div>
+  `;
+}
+
+/* =========================================================================
+   7. GUIDED PACED BREATHING RING (Resonant 4s Inhale / 6s Exhale)
+   ========================================================================= */
+let breathTimer = null;
+const BREATH_CIRC = 2 * Math.PI * 16;
+
+function resetBreathing() {
+  clearInterval(breathTimer);
+  breathTimer = null;
+  $("breathProg").setAttribute("stroke-dashoffset", "0");
+  $("breathDot").className = "breath-center-dot";
+  $("breathStateText").textContent = "Ready";
+  $("breathToggleBtn").textContent = "Breathe";
+}
+
+function toggleBreathing() {
+  if (breathTimer) {
+    resetBreathing();
+    return;
+  }
+  startPacedBreathing();
+}
+
+function startPacedBreathing() {
+  $("breathToggleBtn").textContent = "Pause";
+  let stepInCycle = 0;
+
+  function runBreathTick() {
+    stepInCycle = (stepInCycle + 1) % 10;
+    if (stepInCycle < 4) {
+      $("breathStateText").textContent = `Inhale softly (${4 - stepInCycle}s)`;
+      $("breathDot").className = "breath-center-dot inhale";
+      const pct = (stepInCycle + 1) / 4;
+      $("breathProg").setAttribute("stroke-dashoffset", (BREATH_CIRC * (1 - pct)).toFixed(1));
+    } else {
+      const exhaleStep = stepInCycle - 4;
+      $("breathStateText").textContent = `Exhale slowly (${6 - exhaleStep}s)`;
+      $("breathDot").className = "breath-center-dot exhale";
+      const pct = 1 - ((exhaleStep + 1) / 6);
+      $("breathProg").setAttribute("stroke-dashoffset", (BREATH_CIRC * (1 - pct)).toFixed(1));
+    }
+  }
+
+  runBreathTick();
+  breathTimer = setInterval(runBreathTick, 1000);
+}
+
+/* =========================================================================
+   8. SOMATIC LOGS & NOTES
+   ========================================================================= */
+function renderNotes() {
+  const container = $("savedNotesContainer");
+  if (!savedNotes.length) {
+    container.innerHTML = `<p style="font-size:.76rem; color:var(--ink-dim); margin-top:8px;">No entries saved yet.</p>`;
+    return;
+  }
+  container.innerHTML = savedNotes.slice().reverse().map((n, i) => `
+    <div class="note-card">
+      <p>Card #${n.num} · ${n.title}</p>
+      <span>${n.text.replace(/</g, "&lt;")}</span>
+      <div class="note-actions">
+        <button class="note-btn copy" data-idx="${savedNotes.length - 1 - i}" title="Copy note">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+        <button class="note-btn del" data-idx="${savedNotes.length - 1 - i}" title="Delete note">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join("");
+
+  container.querySelectorAll(".note-btn.copy").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = savedNotes[+btn.dataset.idx];
+      const text = `Card #${item.num} (${item.title}): ${item.text}`;
+      navigator.clipboard.writeText(text).then(() => showToast("Note copied to clipboard"));
+    });
+  });
+
+  container.querySelectorAll(".note-btn.del").forEach(btn => {
+    btn.addEventListener("click", () => {
+      savedNotes.splice(+btn.dataset.idx, 1);
+      localStorage.setItem(NOTES_KEY, JSON.stringify(savedNotes));
+      renderNotes();
+      updateRailStats();
+      showToast("Note deleted");
+    });
+  });
+}
+
+$("saveNoteBtn").addEventListener("click", () => {
+  const val = $("journalInput").value.trim();
+  if (!val || !currentCard) return;
+  savedNotes.push({
+    num: currentCard.n,
+    title: currentCard.title,
+    text: val,
+    date: new Date().toLocaleDateString()
+  });
+  localStorage.setItem(NOTES_KEY, JSON.stringify(savedNotes));
+  $("journalInput").value = "";
+  renderNotes();
+  updateRailStats();
+  showToast("Reflection logged");
+});
+
+/* =========================================================================
+   9. MODALS & SOS GROUNDING ENGINE
+   ========================================================================= */
+$("openHelpBtn").addEventListener("click", () => $("helplineModal").classList.remove("hidden"));
+$("closeHelpModal").addEventListener("click", () => $("helplineModal").classList.add("hidden"));
+
+$("openSosBtn").addEventListener("click", () => $("sosModal").classList.remove("hidden"));
+$("closeSosModal").addEventListener("click", () => $("sosModal").classList.add("hidden"));
+$("finishSosBtn").addEventListener("click", () => {
+  $("sosModal").classList.add("hidden");
+  showToast("Well done. Reconnect with this room at your own pace.");
+});
+
+window.addEventListener("click", e => {
+  if (e.target === $("helplineModal")) $("helplineModal").classList.add("hidden");
+  if (e.target === $("sosModal")) $("sosModal").classList.add("hidden");
+});
+
+/* =========================================================================
+   10. SCREEN SWITCHING & WIRING
+   ========================================================================= */
+$("startDeckBtn").addEventListener("click", () => {
+  const pool = getFilteredPool();
+  if (!pool.length) {
+    showToast("Please tap at least one condition or symptom to begin.");
+    return;
+  }
+  $("startScreen").classList.add("hidden");
+  $("playScreen").classList.remove("hidden");
+  drawNextCard();
+});
+
+$("reconfigureBtn").addEventListener("click", () => {
+  resetBreathing();
+  $("playScreen").classList.add("hidden");
+  $("startScreen").classList.remove("hidden");
+  renderFilterChips();
+  updateDeckCountPreview();
+});
+
+$("nextCardBtn").addEventListener("click", drawNextCard);
+$("reshuffleBtn").addEventListener("click", () => {
+  state.usedCardIds = [];
+  saveState();
+  drawNextCard();
+  showToast("Pool reshuffled");
+});
+
+$("breathToggleBtn").addEventListener("click", toggleBreathing);
+
+document.addEventListener("keydown", e => {
+  if ($("playScreen").classList.contains("hidden")) return;
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    drawNextCard();
+  }
+});
+
+/* Initialize */
+applyTheme();
+renderFilterChips();
+updateDeckCountPreview();
+renderNotes();
+if (window.lucide && lucide.createIcons) lucide.createIcons();
+</script>
+</body>
+</html>
